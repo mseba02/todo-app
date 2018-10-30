@@ -1,7 +1,7 @@
 {
   "name": "to-do-app",
   "version": "1.0.0",
-  "description": "",
+  "description": "to do application",
   "main": "index.js",
   "repository": "",
   "scripts": {
