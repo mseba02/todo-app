@@ -1,8 +1,6 @@
+// imports
 import React,{ Component } from 'react';
 import classNames from 'classnames/bind';
-import styles from './style.css';
-
-
 
 class addTask extends Component{
     constructor(props){
