@@ -10,8 +10,15 @@ class addTask extends Component{
             active: false,
             todotitle: '',
             tododate: '',
-            todopriority: ''
+            todopriority: '',
+            myData: ''
         };
+    }
+    // component did mount with local storage data
+    componentDidMount(){
+        const myData = localStorage.getItem('title');
+        this.setState({myData});
+        console.log(myData);
     }
     // button trigger
     toggleClass = () =>  {
@@ -20,10 +27,17 @@ class addTask extends Component{
         console.log(this.state.active);
     };
     // add to do
-    handleAddTodo= (e) => {
-      e.preventDefault();
-      const titletodo = this.state.todotitle;
-      console.log(titletodo);
+    handleAddTodo = (e) => {
+        e.preventDefault();
+        const titletodo = this.state.todotitle;
+        const date = this.state.tododate;
+        const priority = this.state.todopriority;
+        //  add to localstorage
+        // localStorage.clear();
+        localStorage.setItem('date', date);
+        localStorage.setItem('title', titletodo);
+        localStorage.setItem('priority', priority );
+        console.log(localStorage);
 
     };
     // to do title
@@ -32,15 +46,25 @@ class addTask extends Component{
         this.setState({
             todotitle: value
         });
-        console.log(e.target.value)
+        // console.log(e.target.value)
 
     };
+    // to do date
     handleTDate = (e) => {
-        console.log(e.target.value)
+        // console.log(e.target.value);
+        const date = e.target.value;
+        this.setState({
+            tododate: date
+        });
     };
+    // to do priority
     handleTDPriority = (e) => {
-        console.log(e.target.value)
+        const priority  = e.target.value;
+        this.setState({
+           todopriority: priority
+        });
     };
+    // render
     render(){
         let className = classNames({
             addTask: true,
@@ -50,8 +74,9 @@ class addTask extends Component{
             <div>
                 <div className="today-todolist">
                     <h1>Today's to-do-list</h1>
-                    <div>to do 1 ...</div>
+                    <div>{this.state.myData}</div>
                 </div>
+                {/* form */}
                 <form className={className} onSubmit={this.handleAddTodo}>
                     <input
                         className="to-do-name"
@@ -60,7 +85,7 @@ class addTask extends Component{
                         onChange={this.handleTDTitle}
                     />
                     <input
-                        type="text"
+                        type="number"
                         placeholder="Pick Date"
                         onChange={this.handleTDate}
                     />
