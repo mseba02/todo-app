@@ -14,32 +14,45 @@ class addTask extends Component{
             myData: ''
         };
     }
+
     // component did mount with local storage data
     componentDidMount(){
-        const myData = localStorage.getItem('title');
-        this.setState({myData});
-        console.log(myData);
+        const myData = localStorage.getItem('todoinfo');
+        const data = JSON.parse(myData);
+        this.setState({
+            myData: data
+        });
+        // console.log(myData);
     }
+    componentDidUpdate() {
+        console.log('updated')
+        // this.setState({
+        //     myData: data
+        // });
+    }
+
     // button trigger
     toggleClass = () =>  {
         const currentState = this.state.active;
         this.setState({ active: !currentState });
         console.log(this.state.active);
     };
+
     // add to do
     handleAddTodo = (e) => {
         e.preventDefault();
         const titletodo = this.state.todotitle;
         const date = this.state.tododate;
         const priority = this.state.todopriority;
-        //  add to localstorage
-        // localStorage.clear();
-        localStorage.setItem('date', date);
-        localStorage.setItem('title', titletodo);
-        localStorage.setItem('priority', priority );
-        console.log(localStorage);
+
+        let storedItems = JSON.parse(localStorage.getItem('todoinfo')) || [];
+        storedItems.push({titletodo, date, priority});
+        localStorage.setItem('todoinfo', JSON.stringify(storedItems));
+
+        console.log(storedItems);
 
     };
+
     // to do title
     handleTDTitle = (e) => {
         const value = e.target.value;
@@ -49,6 +62,7 @@ class addTask extends Component{
         // console.log(e.target.value)
 
     };
+
     // to do date
     handleTDate = (e) => {
         // console.log(e.target.value);
@@ -57,6 +71,7 @@ class addTask extends Component{
             tododate: date
         });
     };
+
     // to do priority
     handleTDPriority = (e) => {
         const priority  = e.target.value;
@@ -64,17 +79,39 @@ class addTask extends Component{
            todopriority: priority
         });
     };
+
+    // render items from localStorage
+    showItems()  {
+        if(!this.state.myData) {
+            return <div>There is no to do</div>
+        } else {
+            return this.state.myData.map( item => {
+                return <li key={item.date * 154}>
+                    <span>{item.titletodo}</span>
+                    <span>{item.date}</span>
+                    <span>{item.priority}</span>
+                </li>
+            });
+        }
+
+      console.log(data ,'from')
+    };
+
     // render
     render(){
+
         let className = classNames({
             addTask: true,
             inProggress: this.state.active
         });
+
         return (
             <div>
                 <div className="today-todolist">
                     <h1>Today's to-do-list</h1>
-                    <div>{this.state.myData}</div>
+                    <ul>
+                        {this.showItems()}
+                    </ul>
                 </div>
                 {/* form */}
                 <form className={className} onSubmit={this.handleAddTodo}>
