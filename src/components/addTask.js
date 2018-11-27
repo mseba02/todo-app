@@ -17,6 +17,7 @@ class addTask extends Component{
 
     // component did mount with local storage data
     componentDidMount(){
+        console.log('didmount')
         const myData = localStorage.getItem('todoinfo');
         const data = JSON.parse(myData);
         this.setState({
@@ -26,9 +27,6 @@ class addTask extends Component{
     }
     componentDidUpdate() {
         console.log('updated')
-        // this.setState({
-        //     myData: data
-        // });
     }
 
     // button trigger
@@ -50,6 +48,7 @@ class addTask extends Component{
         localStorage.setItem('todoinfo', JSON.stringify(storedItems));
 
         console.log(storedItems);
+        storedItems;
 
     };
 
@@ -78,6 +77,7 @@ class addTask extends Component{
         this.setState({
            todopriority: priority
         });
+        
     };
 
     // render items from localStorage
@@ -87,14 +87,14 @@ class addTask extends Component{
         } else {
             return this.state.myData.map( item => {
                 return <li key={item.date * 154}>
-                    <span>{item.titletodo}</span>
-                    <span>{item.date}</span>
+                    <span>{item.titletodo} </span>
+                    <span>{item.date} </span>
                     <span>{item.priority}</span>
                 </li>
             });
         }
 
-      console.log(data ,'from')
+      // console.log(data ,'from')
     };
 
     // render
