@@ -1,4 +1,69 @@
+/* resets */
+ul{
+    margin: 0;
+    padding: 0;
+    list-style:none;
+}
+/* clearfix */
+.clearfix:before,
+.clearfix:after {
+    content: "";
+    display: table;
+}
+.clearfix:after {
+    clear: both;
+}
+clearfix {
+    zoom: 1; /* For IE 6/7 (trigger hasLayout) */
+}
+/*  */
 .main-layout{
     background: #eee;
     padding: 20px;
+}
+.todo-section{
+    float: left;
+    width: 33.3%;
+}
+.todo-section .wrapper{
+    position: relative;
+    overflow: hidden;
+    background-color: #fff;
+    padding: 10px;
+    -webkit-border-radius: 5px;
+    -moz-border-radius: 5px;
+    border-radius: 5px;
+    text-align: center;
+    height: 500px;
+}
+.todo-section .addTask{
+    position: absolute;
+    width: 100%;
+    padding: 20px;
+    height: 100%;
+    top: -100%;
+    bottom: auto;
+    left: 0;
+    transition: all 0.5s ease;
+    z-index: 9;
+    right: 0;
+    background: rgba(0,0,0,.8);
+}
+.todo-section .addTask.inProggress{
+    top: 0;
+    bottom: 0;
+}
+.plusAdd{
+    background-color: transparent;
+    border: none;
+    outline: none!important;
+}
+.buttonToggle{
+    position: absolute;
+    left: 0;
+    right: 0;
+    z-index: 10;
+    bottom: 10px;
+    margin: 0 auto;
+    text-align: center;
 }

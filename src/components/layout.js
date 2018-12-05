@@ -3,7 +3,7 @@ import React from 'react';
 
 // layout
 const Layout = ( (props) =>(
-        <div className="main-layout">{props.children}</div>
+        <div className="main-layout clearfix">{props.children}</div>
     )
 );
 

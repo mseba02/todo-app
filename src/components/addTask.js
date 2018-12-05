@@ -10,14 +10,15 @@ class addTask extends Component{
             active: false,
             todotitle: '',
             tododate: '',
-            todopriority: '',
-            myData: ''
+            todopriority: 'Low',
+            myData: '',
+            plus: ''
         };
     }
 
     // component did mount with local storage data
     componentDidMount(){
-        console.log('didmount')
+        console.log('didmount');
         const myData = localStorage.getItem('todoinfo');
         const data = JSON.parse(myData);
         this.setState({
@@ -25,9 +26,10 @@ class addTask extends Component{
         });
         // console.log(myData);
     }
-    componentDidUpdate() {
-        console.log('updated')
-    }
+    // componentDidUpdate() {
+    //     console.log('updated');
+    //     console.log(this.state.myData);
+    // }
 
     // button trigger
     toggleClass = () =>  {
@@ -41,14 +43,15 @@ class addTask extends Component{
         e.preventDefault();
         const titletodo = this.state.todotitle;
         const date = this.state.tododate;
-        const priority = this.state.todopriority;
+        const priority =  this.state.todopriority;
 
         let storedItems = JSON.parse(localStorage.getItem('todoinfo')) || [];
         storedItems.push({titletodo, date, priority});
         localStorage.setItem('todoinfo', JSON.stringify(storedItems));
 
-        console.log(storedItems);
-        storedItems;
+        this.setState({
+            myData: JSON.parse(localStorage.getItem('todoinfo'))
+        })
 
     };
 
@@ -73,11 +76,11 @@ class addTask extends Component{
 
     // to do priority
     handleTDPriority = (e) => {
-        const priority  = e.target.value;
+        const priority = e.target.value;
         this.setState({
            todopriority: priority
         });
-        
+
     };
 
     // render items from localStorage
@@ -99,46 +102,53 @@ class addTask extends Component{
 
     // render
     render(){
-
-        let className = classNames({
+        // classnames
+        let addTask = classNames({
             addTask: true,
-            inProggress: this.state.active
+            inProggress: this.state.active,
         });
-
+        let plus = classNames({
+            plusAdd: true,
+            active: this.state.plus
+        });
         return (
-            <div>
-                <div className="today-todolist">
-                    <h1>Today's to-do-list</h1>
-                    <ul>
-                        {this.showItems()}
-                    </ul>
-                </div>
-                {/* form */}
-                <form className={className} onSubmit={this.handleAddTodo}>
-                    <input
-                        className="to-do-name"
-                        type="text"
-                        placeholder="Enter To-do"
-                        onChange={this.handleTDTitle}
-                    />
-                    <input
-                        type="number"
-                        placeholder="Pick Date"
-                        onChange={this.handleTDate}
-                    />
-                    <div className="form-select">
-                        <label>Priority</label>
-                        <select onChange={this.handleTDPriority}>
-                            <option>Low</option>
-                            <option>Medium</option>
-                            <option>High</option>
-                            <option>Critical</option>
-                        </select>
+            <div className="todo-section">
+                <h1>Today's to-do-list</h1>
+                <div className="wrapper">
+                    <div className="today-todolist">
+                        <ul>
+                            {this.showItems()}
+                        </ul>
                     </div>
-                    <button type="submit">Add To do</button>
-                </form>
-                <div className="buttonToggle">
-                    <button onClick={this.toggleClass}>+</button>
+                    {/* form */}
+                    <form className={addTask} onSubmit={this.handleAddTodo}>
+                        <input
+                            className="to-do-name"
+                            type="text"
+                            placeholder="Enter To-do"
+                            onChange={this.handleTDTitle}
+                        />
+                        <input
+                            type="number"
+                            placeholder="Pick Date"
+                            onChange={this.handleTDate}
+                        />
+                        <div className="form-select">
+                            <label>Priority</label>
+                            <select onChange={this.handleTDPriority}>
+                                <option defaultValue>Low</option>
+                                <option>Medium</option>
+                                <option>High</option>
+                                <option>Critical</option>
+                            </select>
+                        </div>
+                        <button type="submit">Add To do</button>
+                    </form>
+                    <div className="buttonToggle">
+                        <button className={plus} onClick={this.toggleClass}>
+                            <img src="../src/images/add-button.svg" width="30" />
+                        </button>
+                    </div>
                 </div>
             </div>
         )
