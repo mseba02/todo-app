@@ -1,6 +1,10 @@
 // imports
 import React,{ Component } from 'react';
 import classNames from 'classnames/bind';
+import DatePicker from 'react-datepicker';
+
+// import "react-datepicker/dist/react-datepicker.css";
+
 
 class addTask extends Component{
     constructor(props){
@@ -12,7 +16,8 @@ class addTask extends Component{
             tododate: '',
             todopriority: 'Low',
             myData: '',
-            plus: ''
+            plus: false,
+            startDate: new Date()
         };
     }
 
@@ -24,17 +29,21 @@ class addTask extends Component{
         this.setState({
             myData: data
         });
-        // console.log(myData);
+        console.log(myData);
     }
     // componentDidUpdate() {
     //     console.log('updated');
     //     console.log(this.state.myData);
     // }
 
-    // button trigger
+     // button trigger
     toggleClass = () =>  {
         const currentState = this.state.active;
-        this.setState({ active: !currentState });
+        const plusState = this.state.plus;
+        this.setState({
+            active: !currentState,
+            plus: !plusState
+        });
         console.log(this.state.active);
     };
 
@@ -42,15 +51,17 @@ class addTask extends Component{
     handleAddTodo = (e) => {
         e.preventDefault();
         const titletodo = this.state.todotitle;
-        const date = this.state.tododate;
+        const dateV = this.state.tododate;
         const priority =  this.state.todopriority;
 
         let storedItems = JSON.parse(localStorage.getItem('todoinfo')) || [];
-        storedItems.push({titletodo, date, priority});
+        storedItems.push({titletodo, dateV, priority});
         localStorage.setItem('todoinfo', JSON.stringify(storedItems));
 
         this.setState({
-            myData: JSON.parse(localStorage.getItem('todoinfo'))
+            myData: JSON.parse(localStorage.getItem('todoinfo')),
+            active: false,
+            plus: false
         })
 
     };
@@ -67,10 +78,11 @@ class addTask extends Component{
 
     // to do date
     handleTDate = (e) => {
-        // console.log(e.target.value);
-        const date = e.target.value;
+        console.log(e.target.value);
+        const value = e.target.value;
         this.setState({
-            tododate: date
+            tododate: value,
+            // startDate: date
         });
     };
 
@@ -89,9 +101,9 @@ class addTask extends Component{
             return <div>There is no to do</div>
         } else {
             return this.state.myData.map( item => {
-                return <li key={item.date * 154}>
+                return <li key={item.dateV * 154} className={item.priority}>
                     <span>{item.titletodo} </span>
-                    <span>{item.date} </span>
+                    <span>{item.dateV} </span>
                     <span>{item.priority}</span>
                 </li>
             });
@@ -99,7 +111,13 @@ class addTask extends Component{
 
       // console.log(data ,'from')
     };
-
+    handleChange = (date, e) => {
+        const value = e.target.value;
+        console.log(value)
+        this.setState({
+            startDate: date
+        });
+    }
     // render
     render(){
         // classnames
@@ -122,32 +140,35 @@ class addTask extends Component{
                     </div>
                     {/* form */}
                     <form className={addTask} onSubmit={this.handleAddTodo}>
-                        <input
-                            className="to-do-name"
-                            type="text"
-                            placeholder="Enter To-do"
-                            onChange={this.handleTDTitle}
-                        />
-                        <input
-                            type="number"
-                            placeholder="Pick Date"
-                            onChange={this.handleTDate}
-                        />
-                        <div className="form-select">
-                            <label>Priority</label>
-                            <select onChange={this.handleTDPriority}>
-                                <option defaultValue>Low</option>
-                                <option>Medium</option>
-                                <option>High</option>
-                                <option>Critical</option>
-                            </select>
+                        <div className="lay">
+                            <input
+                                className="to-do-name"
+                                type="text"
+                                placeholder="enter to do"
+                                onChange={this.handleTDTitle}
+                            />
+                            <DatePicker
+                                selected={this.state.startDate}
+                                onChange={this.handleChange}
+                            />
+                            <div className="form-select">
+                                <label>Type:</label>
+                                <select onChange={this.handleTDPriority}>
+                                    <option defaultValue>Personal</option>
+                                    <option>Birthday</option>
+                                    <option>Work</option>
+                                    <option>Shopping</option>
+                                </select>
+                            </div>
+                            <button type="submit">Add To do</button>
                         </div>
-                        <button type="submit">Add To do</button>
                     </form>
                     <div className="buttonToggle">
                         <button className={plus} onClick={this.toggleClass}>
-                            <img src="../src/images/add-button.svg" width="30" />
+                            <span className="hor"></span>
+                            <span className="vert"></span>
                         </button>
+                        <p className="add-task-text">Add new task</p>
                     </div>
                 </div>
             </div>
