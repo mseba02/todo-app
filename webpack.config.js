@@ -6,6 +6,16 @@ module.exports = {
     filename: 'bundle.js'
   },
   module: {
+      rules: [
+          {
+              test: /\.css$/,
+              include: /node_modules/,
+              use: [
+                  { loader: "style-loader" },
+                  { loader: "css-loader" }
+              ]
+          }
+      ],
     loaders: [
       {
         exclude: /node_modules/,

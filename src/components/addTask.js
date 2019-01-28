@@ -2,10 +2,10 @@
 import React,{ Component } from 'react';
 import classNames from 'classnames/bind';
 import DatePicker from 'react-datepicker';
+// import style from 'react-datepicker/dist/react-datepicker.css';
 
-// import "react-datepicker/dist/react-datepicker.css";
 
-
+// add to do
 class addTask extends Component{
     constructor(props){
         super(props);
@@ -13,7 +13,6 @@ class addTask extends Component{
         this.state = {
             active: false,
             todotitle: '',
-            tododate: '',
             todopriority: 'Low',
             myData: '',
             plus: false,
@@ -31,10 +30,6 @@ class addTask extends Component{
         });
         console.log(myData);
     }
-    // componentDidUpdate() {
-    //     console.log('updated');
-    //     console.log(this.state.myData);
-    // }
 
      // button trigger
     toggleClass = () =>  {
@@ -51,11 +46,12 @@ class addTask extends Component{
     handleAddTodo = (e) => {
         e.preventDefault();
         const titletodo = this.state.todotitle;
-        const dateV = this.state.tododate;
+        const dateV = this.state.startDate;
+        const storedData = `${dateV.getDate()}-${dateV.getMonth()+1}-${dateV.getFullYear()}`;
         const priority =  this.state.todopriority;
 
         let storedItems = JSON.parse(localStorage.getItem('todoinfo')) || [];
-        storedItems.push({titletodo, dateV, priority});
+        storedItems.push({titletodo, storedData, priority});
         localStorage.setItem('todoinfo', JSON.stringify(storedItems));
 
         this.setState({
@@ -77,12 +73,10 @@ class addTask extends Component{
     };
 
     // to do date
-    handleTDate = (e) => {
-        console.log(e.target.value);
-        const value = e.target.value;
+    handleTDate = (date) => {
+        console.log(date, this.state.startDate);
         this.setState({
-            tododate: value,
-            // startDate: date
+            startDate: date
         });
     };
 
@@ -101,9 +95,9 @@ class addTask extends Component{
             return <div>There is no to do</div>
         } else {
             return this.state.myData.map( item => {
-                return <li key={item.dateV * 154} className={item.priority}>
+                return <li className={item.priority}>
                     <span>{item.titletodo} </span>
-                    <span>{item.dateV} </span>
+                    <span>{item.storedData} </span>
                     <span>{item.priority}</span>
                 </li>
             });
@@ -111,13 +105,7 @@ class addTask extends Component{
 
       // console.log(data ,'from')
     };
-    handleChange = (date, e) => {
-        const value = e.target.value;
-        console.log(value)
-        this.setState({
-            startDate: date
-        });
-    }
+
     // render
     render(){
         // classnames
@@ -147,9 +135,10 @@ class addTask extends Component{
                                 placeholder="enter to do"
                                 onChange={this.handleTDTitle}
                             />
+                            {/* datepicker */}
                             <DatePicker
                                 selected={this.state.startDate}
-                                onChange={this.handleChange}
+                                onChange={this.handleTDate}
                             />
                             <div className="form-select">
                                 <label>Type:</label>

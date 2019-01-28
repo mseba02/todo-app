@@ -25,12 +25,29 @@ class EventsCalendar extends Component{
 
     // render component
     render() {
+        const events = [
+            {
+                start: '2015-07-20',
+                end: '2015-07-02',
+                eventClasses: 'optionalEvent',
+                title: 'test event',
+                description: 'This is a test description of an event',
+            },
+            {
+                start: '2015-07-19',
+                end: '2015-07-25',
+                title: 'test event',
+                description: 'This is a test description of an event',
+                data: 'you can add what ever random data you may want to use later',
+            },
+        ];
         return (
             <div className="calendar-wrap">
                 <h1>Calendar</h1>
                 <Calendar
                     onChange={this.onChange}
                     value={this.state.date}
+                    // events: {events}
                 />
             </div>
         )
